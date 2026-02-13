@@ -1,23 +1,24 @@
+
 import { DesignTemplate, ColorOption } from './types';
 
 export const DESIGNS: DesignTemplate[] = [
   {
     id: 'heritage-stripe',
-    name: 'The Heritage Stripe',
+    name: 'Heritage Stripe',
     image: 'https://i.imgur.com/Nz9lroz.png',
     mask: 'https://i.imgur.com/Nz9lroz.png',
     maxColors: 2
   },
   {
     id: 'classic-hoop',
-    name: 'The Classic Hoop',
+    name: 'Classic Hoop',
     image: 'https://i.imgur.com/zD6iDT7.png',
     mask: 'https://i.imgur.com/zD6iDT7.png',
     maxColors: 3
   },
   {
     id: 'signature-panel',
-    name: 'The Signature Panel',
+    name: 'Signature Panel',
     image: 'https://i.imgur.com/aMbwsIx.png',
     mask: 'https://i.imgur.com/aMbwsIx.png',
     maxColors: 3

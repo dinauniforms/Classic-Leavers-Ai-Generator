@@ -8,7 +8,7 @@ import { generateAiMockup } from './utils/aiHelper';
 
 const App: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<Step>(Step.LANDING);
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [isGenerating, setIsGenerating] = useState<'mens' | 'womens' | null>(null);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [designState, setDesignState] = useState<UserDesign>({
     designId: null,
@@ -81,10 +81,10 @@ const App: React.FC = () => {
     }
   };
 
-  const handleGenerate = async () => {
+  const handleGenerate = async (gender: 'mens' | 'womens') => {
     if (!designState.designId || designState.colorHexes.length === 0) return;
     
-    setIsGenerating(true);
+    setIsGenerating(gender);
     const design = DESIGNS.find(d => d.id === designState.designId);
     if (design) {
       try {
@@ -93,7 +93,8 @@ const App: React.FC = () => {
           design.image, 
           designState.logoUrl,
           design.name,
-          colorNames
+          colorNames,
+          gender
         );
         setDesignState(prev => ({ ...prev, generatedImageUrl: finalImage }));
         nextStep();
@@ -101,7 +102,7 @@ const App: React.FC = () => {
         console.error("Failed to generate AI mockup:", error);
         alert("We encountered an issue crafting your AI mockup. Please try again.");
       } finally {
-        setIsGenerating(false);
+        setIsGenerating(null);
       }
     }
   };
@@ -120,6 +121,7 @@ const App: React.FC = () => {
     <Layout 
       title={currentStep === Step.LANDING ? undefined : ""} 
       onBack={prevStep}
+      onLogoClick={resetApp}
       showBack={currentStep !== Step.LANDING}
     >
       {/* LANDING SCREEN */}
@@ -193,7 +195,7 @@ const App: React.FC = () => {
       {currentStep === Step.COLOR && (
         <div className="w-full max-w-5xl mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold tracking-tight mb-4 text-[#141B21]">Select your School Colours</h2>
+            <h2 className="text-5xl font-bold tracking-tight mb-4 text-[#141B21]">Select your Colours</h2>
             <p className="text-gray-500 text-lg">The {selectedDesign?.name} allows up to {selectedDesign?.maxColors} colours.</p>
             <div className="mt-6 flex justify-center gap-2">
               {Array.from({ length: selectedDesign?.maxColors || 3 }).map((_, i) => (
@@ -255,7 +257,7 @@ const App: React.FC = () => {
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 }`}
               >
-                Continue to Crest
+                Submit
               </button>
           </div>
         </div>
@@ -265,7 +267,7 @@ const App: React.FC = () => {
       {currentStep === Step.LOGO && (
         <div className="w-full max-w-2xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold tracking-tight mb-4 text-[#141B21]">Add Your Crest</h2>
+            <h2 className="text-5xl font-bold tracking-tight mb-4 text-[#141B21]">Add Your Logo</h2>
             <p className="text-gray-500 text-lg">Upload your school logo to be placed on the chest.</p>
           </div>
           <div className="bg-white p-12 rounded-[48px] apple-shadow border-2 border-dashed border-gray-200 hover:border-blue-400 transition-colors flex flex-col items-center">
@@ -292,7 +294,7 @@ const App: React.FC = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                   </svg>
                 </div>
-                <p className="text-xl text-gray-500 text-center font-medium">Drag and drop your school crest</p>
+                <p className="text-xl text-gray-500 text-center font-medium">Drag and drop your school logo</p>
                 <p className="text-gray-400 text-sm mt-2">Supports PNG, JPG (transparent recommended)</p>
               </div>
             )}
@@ -310,21 +312,36 @@ const App: React.FC = () => {
             </label>
           </div>
 
-          <div className="mt-16 flex justify-center">
+          <div className="mt-16 flex flex-col sm:flex-row justify-center gap-6">
             <button 
-              onClick={handleGenerate}
-              disabled={isGenerating}
-              className={`px-14 py-6 bg-[#0071e3] text-white rounded-full text-2xl font-bold shadow-2xl shadow-blue-500/30 transition-all transform active:scale-95 flex items-center gap-4 ${isGenerating ? 'opacity-70 cursor-not-allowed' : 'hover:bg-[#0077ed]'}`}
+              onClick={() => handleGenerate('mens')}
+              disabled={isGenerating !== null}
+              className={`px-10 py-6 bg-[#0071e3] text-white rounded-full text-xl font-bold shadow-2xl shadow-blue-500/30 transition-all transform active:scale-95 flex items-center justify-center gap-4 flex-1 ${isGenerating !== null ? 'opacity-70 cursor-not-allowed' : 'hover:bg-[#0077ed]'}`}
             >
-              {isGenerating ? (
+              {isGenerating === 'mens' ? (
                 <>
-                  <svg className="animate-spin h-8 w-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <svg className="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Building Your AI Mockup...
+                  Rendering Mens...
                 </>
-              ) : 'Generate My Design'}
+              ) : 'Generate Mens'}
+            </button>
+            <button 
+              onClick={() => handleGenerate('womens')}
+              disabled={isGenerating !== null}
+              className={`px-10 py-6 bg-[#0071e3] text-white rounded-full text-xl font-bold shadow-2xl shadow-blue-500/30 transition-all transform active:scale-95 flex items-center justify-center gap-4 flex-1 ${isGenerating !== null ? 'opacity-70 cursor-not-allowed' : 'hover:bg-[#0077ed]'}`}
+            >
+              {isGenerating === 'womens' ? (
+                <>
+                  <svg className="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Rendering Womens...
+                </>
+              ) : 'Generate Womens'}
             </button>
           </div>
         </div>

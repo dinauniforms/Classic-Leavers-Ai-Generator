@@ -5,10 +5,11 @@ interface LayoutProps {
   children: React.ReactNode;
   title?: string;
   onBack?: () => void;
+  onLogoClick?: () => void;
   showBack?: boolean;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, title, onBack, showBack }) => {
+const Layout: React.FC<LayoutProps> = ({ children, title, onBack, onLogoClick, showBack }) => {
   return (
     <div className="min-h-screen flex flex-col items-center px-6 py-12 md:py-24 max-w-6xl mx-auto">
       <nav className="fixed top-0 left-0 w-full h-16 bg-[#1D1D1F] z-50 flex items-center justify-between px-8 apple-shadow">
@@ -24,11 +25,17 @@ const Layout: React.FC<LayoutProps> = ({ children, title, onBack, showBack }) =>
               <span className="text-sm font-medium hidden sm:inline">Back</span>
             </button>
           )}
-          <img 
-            src="https://classicsports.com.au/cdn/shop/files/Asset_1_300x_2fbde78b-8072-4a58-9da7-838f44e9b801.png?v=1699581951&width=400" 
-            alt="Classic Sportswear" 
-            className="h-6 w-auto brightness-0 invert"
-          />
+          <button 
+            onClick={onLogoClick}
+            className="flex items-center transition-opacity hover:opacity-80 active:scale-95"
+            aria-label="Go to home"
+          >
+            <img 
+              src="https://classicsports.com.au/cdn/shop/files/Asset_1_300x_2fbde78b-8072-4a58-9da7-838f44e9b801.png?v=1699581951&width=400" 
+              alt="Classic Sportswear" 
+              className="h-6 w-auto brightness-0 invert"
+            />
+          </button>
         </div>
         <div className="flex items-center gap-8">
           <a 

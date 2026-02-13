@@ -1,10 +1,12 @@
+
 import { GoogleGenAI } from "@google/genai";
 
 export async function generateAiMockup(
   templateUrl: string,
   logoBase64: string | null,
   designName: string,
-  colors: string[]
+  colors: string[],
+  gender: 'mens' | 'womens'
 ): Promise<string> {
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   
@@ -24,21 +26,25 @@ export async function generateAiMockup(
 
   const templatePart = await getBase64FromUrl(templateUrl);
   
+  const subjectDescription = gender === 'mens' 
+    ? `A young male student of Indigenous Australian and Māori heritage. He has striking light blue eyes and an athletic, lean muscular build. His hair is a messy textured taper-fade (no mullet).`
+    : `A beautiful 18-year-old school student of mixed European heritage. She has brown hair neatly slicked back in a low bun with a clean centre part. She has a graceful, athletic posture.`;
+
   const parts: any[] = [
     {
       inlineData: templatePart
     },
     {
-      text: `Task: Create a professional e-commerce product mockup of a young man wearing a custom rugby jersey.
+      text: `Task: Create a professional e-commerce product mockup of a ${gender === 'mens' ? 'young man' : 'young woman'} wearing a custom rugby jersey.
       
       SUBJECT DESCRIPTION:
-      A young male student of Indigenous Australian and Māori heritage. He has striking light blue eyes and an athletic, lean muscular build. His hair is a messy textured taper-fade (no mullet). 
+      ${subjectDescription}
       
       TECHNICAL SPECS:
       - Hyper-realistic portrait, 8k resolution.
       - Shot on 85mm lens, medium-full shot framing.
       - VISIBILITY: The entire jersey MUST be fully visible from collar to bottom hem. 
-      - BOTTOM DETAIL: Include a small portion of the top of his tailored school trousers/pants at the very bottom of the frame to show the full fit.
+      - BOTTOM DETAIL: Include a small portion of the top of their tailored school trousers/skirt at the very bottom of the frame to show the full fit.
       - Professional studio lighting, clean and minimalist.
       - Solid neutral light gray background.
       - Natural, confident expression.
@@ -65,10 +71,10 @@ export async function generateAiMockup(
     });
     parts.push({
       text: `EMBROIDERY DETAIL: 
-      Take the second attached image (school crest) and render it as a realistic embroidered badge.
+      Take the second attached image (school logo) and render it as a realistic embroidered badge.
       Placement: On the model's RIGHT CHEST (viewer's LEFT), exactly opposite the 'Classic' logo branding.
-      The result should show both logos: 'Classic' on the model's left, and the school crest on the model's right.
-      Ensure the stitching texture of the crest is visible and detailed.`
+      The result should show both logos: 'Classic' on the model's left, and the school logo on the model's right.
+      Ensure the stitching texture of the logo is visible and detailed.`
     });
   }
 
