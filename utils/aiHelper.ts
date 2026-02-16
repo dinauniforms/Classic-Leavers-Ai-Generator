@@ -28,7 +28,7 @@ export async function generateAiMockup(
   
   const subjectDescription = gender === 'mens' 
     ? `A young male student of Indigenous Australian and Māori heritage. He has striking light blue eyes and an athletic, lean muscular build. His hair is a messy textured taper-fade (no mullet).`
-    : `A beautiful 18-year-old school student of mixed European heritage. She has brown hair neatly slicked back in a low bun with a clean centre part. She has a graceful, athletic posture.`;
+    : `A naturally beautiful 18-year-old school student with a sun-kissed look. She has beachy blonde hair styled in loose, natural waves. She has striking blue eyes and light, natural freckles across her nose and cheeks. She has a graceful, athletic posture.`;
 
   const parts: any[] = [
     {

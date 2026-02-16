@@ -37,14 +37,22 @@ const Layout: React.FC<LayoutProps> = ({ children, title, onBack, onLogoClick, s
             />
           </button>
         </div>
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-6 md:gap-8">
           <a 
             href="https://classicsports.com.au/pages/schoolwear" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-white/80 hover:text-white text-sm font-medium transition-colors hidden sm:inline"
+            className="text-white/80 hover:text-white text-sm font-medium transition-colors hidden md:inline"
           >
             Learn More
+          </a>
+          <a 
+            href="https://heyzine.com/flip-book/41313f42ab.html" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-white/80 hover:text-white text-sm font-medium transition-colors hidden sm:inline"
+          >
+            View Catalogue
           </a>
           <a 
             href="https://classicsports.com.au/pages/contact" 
